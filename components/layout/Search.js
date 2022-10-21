@@ -12,7 +12,6 @@ const Search = () => {
 
   const submitHandler=async(e)=>{
     e.preventDefault();
-    console.log()
     if(keyword){
       let searchQuery=`/?keyword=${keyword}`;
       if(location) searchQuery=searchQuery.concat(`&location=${location}`)
