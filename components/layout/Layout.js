@@ -1,8 +1,9 @@
 import React from 'react'
-import Head from 'next/head'
+import Head from 'next/head';
 import Header from './Header'
 import Footer from './Footer'
-import Script from 'next/script'
+import {ToastContainer} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const Layout = ({ children, title = 'Find You Job Now' }) => {
   return (
@@ -10,6 +11,7 @@ const Layout = ({ children, title = 'Find You Job Now' }) => {
       <Head>
         <title>{title} - Jobbee</title>
       </Head>
+      <ToastContainer position='bottom-right'/>
       <Header />
       {children}
       <Footer />
