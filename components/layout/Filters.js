@@ -34,7 +34,6 @@ const Filters = () => {
         queryParams.set(checkbox.name, checkbox.value)
       } else {
         //Append new filter
-        console.log(queryParams)
         queryParams.append(checkbox.name, checkbox.value)
       }
     }

@@ -12,11 +12,12 @@ export const AuthProvider = ({ children }) => {
 
   const router = useRouter();
 
-  useEffect(()=>{
-    if(!user){
+  useEffect(() => {
+    if (!user) {
       loadUser()
     }
-  },[user])
+  }, [user])
+
   //login user
   const login = async ({ username, password }) => {
     try {
@@ -41,19 +42,68 @@ export const AuthProvider = ({ children }) => {
       )
     }
   }
-  //load user
-  const loadUser = async () => {
+
+  //register user
+  const register = async ({ firstName, lastName, email, password }) => {
     try {
       setLoading(true)
 
-      const res = await axios.post('/api/auth/user', {
-        username,
+      const res = await axios.post(`${process.env.API_URL}/api/register/`, {
+        first_name: firstName,
+        last_name: lastName,
+        email,
         password
       })
+      if (res.data.message) {
+        setLoading(false)
+        router.push('/login')
+      }
+
+    } catch (error) {
+      setLoading(false);
+      setError(
+        error.response &&
+        (error.response.data.detail || error.response.data.error)
+      )
+    }
+  }
+
+  //load user
+  const loadUser = async () => {
+    try {
+      setLoading(true);
+
+      const res = await axios.get('/api/auth/user')
       if (res.data.user) {
         setIsAuthenticated(true);
         setLoading(false)
         setUser(res.data.user)
+      }
+
+    } catch (error) {
+      setLoading(false);
+      setIsAuthenticated(false)
+      setUser(null)
+      setError(
+        error.response &&
+        (error.response.data.detail || error.response.data.error)
+      )
+    }
+  }
+  //Clear Errors
+  const clearErrors = () => {
+    setError(null)
+  }
+  //logout user
+  const logout = async () => {
+    try {
+      setLoading(true)
+
+      const res = await axios.post('/api/auth/logout')
+      if (res.data.success) {
+        setIsAuthenticated(false);
+        setLoading(false)
+        setUser(null)
       }
 
     } catch (error) {
@@ -73,7 +123,10 @@ export const AuthProvider = ({ children }) => {
         user,
         error,
         isAuthenticated,
-        login
+        login,
+        register,
+        logout,
+        clearErrors
       }}
     >
       {children}

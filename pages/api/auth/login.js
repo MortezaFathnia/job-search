@@ -1,3 +1,4 @@
+
 import axios from 'axios'
 import cookie from 'cookie'
 
@@ -6,7 +7,6 @@ export default async (req, res) => {
   if (req.method === 'POST') {
     const { username, password } = req.body;
     try {
-      console.log('21288')
       const response = await axios.post(`${process.env.API_URL}/api/token/`,
         {
           username,
@@ -17,7 +17,6 @@ export default async (req, res) => {
             'Content-Type': 'application/json'
           }
         });
-      console.log(1224, response)
       if (response.data.access) {
         res.setHeader('Set-Cookie', [
           cookie.serialize('access', response.data.access, {
@@ -33,7 +32,6 @@ export default async (req, res) => {
           success: true
         })
       } else {
-        console.log('121')
         return res.status(response.status).json({
           error: 'Authentication failed'
         })

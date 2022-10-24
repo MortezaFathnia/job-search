@@ -4,11 +4,11 @@ import cookie from 'cookie'
 export default async (req, res) => {
 
   if (req.method === 'GET') {
-    const cookies=cookie.parse(req.headers.cookie || '')
-    const cookie=cookie.access || false
-    if(!access){
+    const cookies = cookie.parse(req.headers.cookie || '')
+    const access = cookies.access || false
+    if (!access) {
       return res.status(401).json({
-        error:'Login first to load user'
+        message: 'Login first to load user'
       })
     }
     try {
@@ -19,11 +19,11 @@ export default async (req, res) => {
             'Authorization': `Bearer ${access}`
           }
         });
-        if(response.data){
-          return res.status(200).json({
-            user:response.data
-          })
-        }
+      if (response.data) {
+        return res.status(200).json({
+          user: response.data
+        })
+      }
 
     } catch (error) {
       res.status(error?.response.status).json({
