@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [updated, setUpdated] = useState(false)
+  const [uploaded, setUploaded] = useState(false)
   const [error, setError] = useState(null);
 
   const router = useRouter();
@@ -83,14 +84,44 @@ export const AuthProvider = ({ children }) => {
         email,
         password
       }, {
-        headers:{
-          Authorization:`Bearer ${access_token}`
+        headers: {
+          Authorization: `Bearer ${access_token}`
         }
       })
       if (res.data) {
         setLoading(false)
         setUser(res.data)
         setUpdated(true)
+      }
+
+    } catch (error) {
+      setLoading(false);
+      setError(
+        error.response &&
+        (error.response.data.detail || error.response.data.error)
+      )
+    }
+  }
+
+  //upload resume
+  const uploadResume = async (
+    formData,
+    access_token
+  ) => {
+    try {
+      setLoading(true)
+
+      const res = await axios.put(
+        `${process.env.API_URL}/api/upload/resume/`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`
+          }
+        })
+      if (res.data) {
+        setLoading(false)
+        setUploaded(true)
       }
 
     } catch (error) {
@@ -159,9 +190,11 @@ export const AuthProvider = ({ children }) => {
         error,
         isAuthenticated,
         updated,
+        uploaded,
         login,
         register,
         updateProfile,
+        uploadResume,
         logout,
         setUpdated,
         clearErrors
