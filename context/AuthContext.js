@@ -8,8 +8,8 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [updated, setUpdated] = useState(false)
-  const [uploaded, setUploaded] = useState(false)
+  const [updated, setUpdated] = useState(null)
+  const [uploaded, setUploaded] = useState(null)
   const [error, setError] = useState(null);
 
   const router = useRouter();
